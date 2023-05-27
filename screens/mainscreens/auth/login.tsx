@@ -1,4 +1,4 @@
-import { Image, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
+import { Image, Text, TextInput, TouchableWithoutFeedback, View } from "react-native";
 import tw from 'twrnc';
 import { Button } from "../../../components";
 import { AuthLayout } from "../../../layouts";
@@ -53,7 +53,14 @@ const Login = ({ navigation }: any): JSX.Element => {
                     })
                     break;
                 case 200:
-                    console.log(data);
+                    showMessage({
+                        message: data?.message,
+                        description: "Log In Successful!",
+                        floating: true,
+                        statusBarHeight: 30,
+                        duration: 5000,
+                        type: 'success',
+                    })
                     break;
                 default:
                     showMessage({
