@@ -1,20 +1,32 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useEffect, useState, useContext } from "react";
+import { useFonts } from "expo-font";
+import { Onboarding, MainNavs } from "./navigators";
+import { AppContext, AppContextProvider } from "./contexts";
 
 export default function App() {
+  // const [opened, setOpened] = useState<boolean>(false);
+  const { opened, setOpened } = useContext(AppContext);
+
+  const checkDevice = async (): Promise<any> => {
+    try {
+      const val = await AsyncStorage.getItem('opened');
+      if (val !== null) { setOpened(true); return true; }
+      return false;
+    } catch (error) {
+      console.error(error);
+      console.log(opened)
+      return false;
+    }
+  }
+
+  useEffect(() => {
+    if (!checkDevice()) console.log("Error with async storage");
+  })
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <AppContextProvider>
+      {(!opened) ? <Onboarding /> : <MainNavs />}
+    </AppContextProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
