@@ -13,8 +13,6 @@ const MainApp = (): JSX.Element => {
             if (val !== null) { setOpened(true); return true; }
             return false;
         } catch (error) {
-            console.error(error);
-            console.log(opened)
             return false;
         }
     }
