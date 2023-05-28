@@ -1,10 +1,11 @@
-import { Image, Text, TextInput, TouchableWithoutFeedback, View } from "react-native";
+import { Image, Text, TextInput, TouchableWithoutFeedback, View, Vibration } from "react-native";
 import tw from 'twrnc';
 import { Button } from "../../../components";
 import { AuthLayout } from "../../../layouts";
 import { Post } from "../../../utils/request";
-import { useEffect, useState } from "react";
-import FlashMessage, {showMessage} from "react-native-flash-message";
+import { useContext, useEffect, useState } from "react";
+import FlashMessage, { showMessage } from "react-native-flash-message";
+import { AppContext } from "../../../contexts";
 
 const Login = ({ navigation }: any): JSX.Element => {
     const google = require('../../../assets/images/others/google_auth.png');
@@ -15,6 +16,8 @@ const Login = ({ navigation }: any): JSX.Element => {
     const [disabled, setDisabled] = useState<boolean>(true);
     const [loading, setLoading] = useState<boolean>(false);
 
+    const { setLoggedIn } = useContext(AppContext);
+
     const handleLogin = async (): Promise<any> => {
         try {
             setLoading(true);
@@ -24,8 +27,9 @@ const Login = ({ navigation }: any): JSX.Element => {
                 'password': password
             }));
 
-            switch(data.status){
+            switch (data.status) {
                 case 400:
+                    Vibration.vibrate();
                     showMessage({
                         message: data?.message,
                         type: 'danger',
@@ -35,6 +39,7 @@ const Login = ({ navigation }: any): JSX.Element => {
                     })
                     break;
                 case 404:
+                    Vibration.vibrate();
                     showMessage({
                         message: data?.message,
                         type: 'danger',
@@ -44,6 +49,7 @@ const Login = ({ navigation }: any): JSX.Element => {
                     })
                     break;
                 case 401:
+                    Vibration.vibrate();
                     showMessage({
                         message: data?.message,
                         type: 'danger',
@@ -61,8 +67,10 @@ const Login = ({ navigation }: any): JSX.Element => {
                         duration: 5000,
                         type: 'success',
                     })
+                    setLoggedIn(true);
                     break;
                 default:
+                    Vibration.vibrate();
                     showMessage({
                         message: "Unknown Error",
                         type: 'danger',
@@ -127,7 +135,7 @@ const Login = ({ navigation }: any): JSX.Element => {
             </View>
 
             <Button disabled={disabled} onPress={handleLogin}>
-                <Text>{(loading)?'Loading...':'Log In'}</Text>
+                <Text>{(loading) ? 'Loading...' : 'Log In'}</Text>
             </Button>
 
             <View style={tw`w-[100%] my-6 flex items-center justify-center flex-row`}>

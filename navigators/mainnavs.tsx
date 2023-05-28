@@ -1,13 +1,20 @@
-import { View } from "react-native"
 import AuthNavs from "./AuthNavs";
-import { useContext } from "react";
+import AppNavs from "./AppNavs";
+import { useContext, useEffect } from "react";
 import { AppContext } from "../contexts";
 
 const MainNavs = (): JSX.Element => {
-    const {loggedIn} = useContext(AppContext);
+    const {loggedIn, setLoggedIn, checkLoggedIn} = useContext(AppContext);
+
+    useEffect(()=>{
+        if(checkLoggedIn?.()){
+            setLoggedIn(true);
+        }
+        return;
+    },[]);
 
     return (
-        (!loggedIn)?<AuthNavs />:<></>
+        (!loggedIn)?<AuthNavs />:<AppNavs />
     )
 }
 
