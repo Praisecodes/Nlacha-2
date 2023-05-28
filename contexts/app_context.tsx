@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type AppContextType = {
@@ -6,6 +6,9 @@ type AppContextType = {
   saveDevice?: () => Promise<boolean>;
   loggedIn?: boolean; setLoggedIn?: any;
   checkLoggedIn?: () => Promise<boolean>;
+  saveToken?: (token:string) => Promise<boolean>;
+  getToken?: ()=>Promise<any>;
+  // token?:string;
 }
 
 const AppContext = createContext<AppContextType>({});
@@ -13,6 +16,7 @@ const AppContext = createContext<AppContextType>({});
 export const AppContextProvider = ({ children }: any) => {
   const [opened, setOpened] = useState<boolean>(false);
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
+  // const [accessToken, setAccessToken] = useState<string>();
 
   const saveDevice = async (): Promise<boolean> => {
     try {
@@ -23,10 +27,11 @@ export const AppContextProvider = ({ children }: any) => {
     }
   }
 
-  const checkLoggedIn = async ():Promise<boolean> => {
+  const checkLoggedIn = async (): Promise<boolean> => {
     try {
       let val = await AsyncStorage.getItem('logged_in');
-      if(val !== null){
+      let token = await AsyncStorage.getItem('accessToken');
+      if (val !== null && token !== null) {
         return true;
       }
       return false;
@@ -36,11 +41,54 @@ export const AppContextProvider = ({ children }: any) => {
     }
   }
 
+  const saveToken = async(token:string):Promise<boolean> => {
+    try {
+      await AsyncStorage.setItem('accessToken', token);
+      return true;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  }
+
+  const getToken = async ():Promise<any> => {
+    try {
+      let val = await AsyncStorage.getItem('accessToken');
+      if(val !== null){
+        return val;
+      }
+      return "";
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  // const checkToken =async ():Promise<boolean> => {
+  //   try {
+  //     let val = await AsyncStorage.getItem('accessToken');
+  //     if(val !== null){
+  //       setAccessToken(val);
+  //       return true;
+  //     }
+  //     return false;
+  //   } catch (error) {
+  //     return false;
+  //   }
+  // }
+
+  // (async()=>{
+  //   if(!await checkToken()){
+  //     console.error("Couldn't set token")
+  //   }
+  //   return;
+  // })()
+
   const values = {
     opened, setOpened,
     saveDevice,
     loggedIn, setLoggedIn,
-    checkLoggedIn,
+    checkLoggedIn, saveToken,
+    getToken
   }
 
   return (

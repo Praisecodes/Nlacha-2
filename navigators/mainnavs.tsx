@@ -10,11 +10,11 @@ const MainNavs = (): JSX.Element => {
         if(checkLoggedIn?.()){
             setLoggedIn(true);
         }
-        return;
+        setLoggedIn(false);
     },[]);
 
     return (
-        (!loggedIn)?<AuthNavs />:<AppNavs />
+        (!loggedIn && !checkLoggedIn?.())?<AuthNavs />:<AppNavs />
     )
 }
 

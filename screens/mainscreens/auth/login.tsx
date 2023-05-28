@@ -16,7 +16,7 @@ const Login = ({ navigation }: any): JSX.Element => {
     const [disabled, setDisabled] = useState<boolean>(true);
     const [loading, setLoading] = useState<boolean>(false);
 
-    const { setLoggedIn } = useContext(AppContext);
+    const { setLoggedIn, saveToken } = useContext(AppContext);
 
     const handleLogin = async (): Promise<any> => {
         try {
@@ -67,6 +67,7 @@ const Login = ({ navigation }: any): JSX.Element => {
                         duration: 5000,
                         type: 'success',
                     })
+                    await saveToken?.(data.token);
                     setLoggedIn(true);
                     break;
                 default:
