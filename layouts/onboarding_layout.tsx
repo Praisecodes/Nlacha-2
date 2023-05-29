@@ -16,7 +16,7 @@ const OnboardingLayout = ({ children, section, jumpTo }: Props): JSX.Element => 
     const handleGetStarted = () => {
         if(saveDevice?.()){
             setOpened(true);
-            console.log('Something done')
+            console.log('Device Saved');
         }
     }
 

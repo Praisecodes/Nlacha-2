@@ -61,7 +61,7 @@ const Home = ({ navigation }: any): JSX.Element => {
             <StatusBar style="auto" />
             <ScrollView contentContainerStyle={tw`min-h-[100%] pb-5`}>
                 <View style={[tw`min-h-[100%] relative`]}>
-                    <View style={[tw`w-[100%] sticky top-0 left-0 bg-[#FDC500] py-20 flex justify-center items-center`]}>
+                    <View style={[tw`w-[100%] top-0 left-0 bg-[#FDC500] py-20 flex justify-center items-center`]}>
                         <Text style={[tw`text-xl text-[#1E0C4A]`, { fontFamily: 'Nunito-bold' }]}>
                             Home
                         </Text>

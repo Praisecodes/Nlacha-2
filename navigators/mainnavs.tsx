@@ -4,17 +4,18 @@ import { useContext, useEffect } from "react";
 import { AppContext } from "../contexts";
 
 const MainNavs = (): JSX.Element => {
-    const {loggedIn, setLoggedIn, checkLoggedIn} = useContext(AppContext);
+    const { loggedIn, setLoggedIn, checkLoggedIn } = useContext(AppContext);
 
-    useEffect(()=>{
-        if(checkLoggedIn?.()){
+    useEffect(() => {
+        if (checkLoggedIn?.()) {
             setLoggedIn(true);
+            return;
         }
         setLoggedIn(false);
-    },[]);
+    }, []);
 
     return (
-        (!loggedIn)?<AuthNavs />:<AppNavs />
+        (!loggedIn == true) ? <AuthNavs /> : <AppNavs />
     )
 }
 

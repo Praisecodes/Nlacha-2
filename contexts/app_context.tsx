@@ -32,6 +32,7 @@ export const AppContextProvider = ({ children }: any) => {
         console.log(token);
         return true;
       }
+      console.log('Token not found');
       return false;
     } catch (error) {
       console.error(error);
