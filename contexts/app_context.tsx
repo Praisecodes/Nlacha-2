@@ -8,6 +8,7 @@ type AppContextType = {
   checkLoggedIn?: () => Promise<boolean>;
   saveToken?: (token: string) => Promise<boolean>;
   getToken?: () => Promise<any>;
+  menuItems?: any[]; setMenuItems?: any;
 }
 
 const AppContext = createContext<AppContextType>({});
@@ -15,6 +16,7 @@ const AppContext = createContext<AppContextType>({});
 export const AppContextProvider = ({ children }: any) => {
   const [opened, setOpened] = useState<boolean>(false);
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
+  const [menuItems, setMenuItems] = useState<any[]>([]);
 
   const saveDevice = async (): Promise<boolean> => {
     try {
@@ -67,7 +69,7 @@ export const AppContextProvider = ({ children }: any) => {
     saveDevice,
     loggedIn, setLoggedIn,
     checkLoggedIn, saveToken,
-    getToken
+    getToken, menuItems, setMenuItems,
   }
 
   return (
