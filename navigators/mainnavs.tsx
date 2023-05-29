@@ -14,7 +14,7 @@ const MainNavs = (): JSX.Element => {
     },[]);
 
     return (
-        (!loggedIn && !checkLoggedIn?.())?<AuthNavs />:<AppNavs />
+        (!loggedIn)?<AuthNavs />:<AppNavs />
     )
 }
 

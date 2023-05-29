@@ -59,15 +59,16 @@ const Login = ({ navigation }: any): JSX.Element => {
                     })
                     break;
                 case 200:
-                    showMessage({
-                        message: data?.message,
-                        description: "Log In Successful!",
-                        floating: true,
-                        statusBarHeight: 30,
-                        duration: 5000,
-                        type: 'success',
-                    })
-                    await saveToken?.(data.token);
+                    if (!await saveToken?.(data.token)){
+                        showMessage({
+                            message: "Error!",
+                            description: "An Error Occured While Saving Your Login, Please Try Again.",
+                            statusBarHeight: 30,
+                            duration: 7000,
+                            floating: true,
+                        });
+                        break;
+                    }
                     setLoggedIn(true);
                     break;
                 default:
