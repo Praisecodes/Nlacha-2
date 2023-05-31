@@ -20,7 +20,7 @@ const DisplayItems = ({menuItems}:any):JSX.Element => {
     return(
         menuItems.map((menuItem:any)=>(
             <TouchableWithoutFeedback key={menuItem.id}>
-                <View style={[tw`w-full py-2`]}>
+                <View style={[tw`w-full py-3`]}>
                     <Image source={{uri: menuItem.image}} style={[tw`w-full h-10`]} />
                     <View style={[tw`flex flex-row w-full justify-between items-center`]}>
                         <View>
@@ -164,7 +164,7 @@ const Home = ({ navigation }: any): JSX.Element => {
                         <Text style={[{ fontFamily: 'Nunito-bold' }, tw`text-[#1E0C4A] text-xl py-3`]}>
                             Popular Choices
                         </Text>
-                        <View>
+                        <View style={tw`py-5`}>
                             {(loading) ?
                                 <Text>Loading...</Text>
                                 :
