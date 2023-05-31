@@ -5,12 +5,40 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { Get } from "../../../utils/request";
 import { AppContext } from "../../../contexts";
 import FlashMessage, { showMessage } from "react-native-flash-message";
+import { Feather } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 
 const NoItems = (): JSX.Element => {
     return (
         <Text style={[{ fontFamily: 'Nunito-bold' }, tw`text-2xl text-[#00000044] py-5`]}>
             No Items Available!
         </Text>
+    )
+}
+
+const DisplayItems = ({menuItems}:any):JSX.Element => {
+    return(
+        menuItems.map((menuItem:any)=>(
+            <TouchableWithoutFeedback key={menuItem.id}>
+                <View style={[tw`w-full py-2`]}>
+                    <Image source={{uri: menuItem.image}} style={[tw`w-full h-10`]} />
+                    <View style={[tw`flex flex-row w-full justify-between items-center`]}>
+                        <View>
+                            <Text style={[{fontFamily: 'Nunito-bold'}, tw`text-[#1E0C4A] text-base`]}>
+                                {menuItem.meal}
+                            </Text>
+                            <Text style={[{fontFamily: 'Nunito'}, tw`text-sm`]}>
+                                #{menuItem.price}
+                            </Text>
+                        </View>
+                        <View style={[tw`flex flex-row items-center`]}>
+                            <Ionicons name="ios-cart-outline" size={23} color={'#1E0C4A'} style={[tw`mx-1`]} />
+                            <Feather name="heart" size={20} color={'#1E0C4A'} style={[tw`mx-2`]} />
+                        </View>
+                    </View>
+                </View>
+            </TouchableWithoutFeedback>
+        ))
     )
 }
 
@@ -62,8 +90,8 @@ const Home = ({ navigation }: any): JSX.Element => {
             console.log("Token saved");
             switch (data.status) {
                 case 200:
-                    console.log(data.menus);
                     setMenuItems(data.menus);
+                    console.log(data.menus);
                     break;
                 default:
                     flashRef.current.showMessage({
@@ -93,17 +121,19 @@ const Home = ({ navigation }: any): JSX.Element => {
         setLoading(false);
     }
 
-    // useEffect(() => {
-    //     (async () => {
-    //         setLoading(true);
-    //         await handleRequest();
-    //         setLoading(false);
-    //     })()
-    // }, []);
+    const runOnStart = async ():Promise<void> => {
+        setLoading(true);
+        await handleRequest();
+        setLoading(false);
+    }
+
+    useEffect(() => {
+        runOnStart();
+    }, []);
 
     return (
         <View style={tw`h-[100%] w-[100%] bg-[#fff]`}>
-            <StatusBar style="auto" />
+            <StatusBar style="inverted" />
             <FlashMessage ref={flashRef} />
             <ScrollView contentContainerStyle={tw`min-h-[100%] pb-5`}>
                 <View style={[tw`min-h-[100%] relative`]}>
@@ -138,7 +168,7 @@ const Home = ({ navigation }: any): JSX.Element => {
                             {(loading) ?
                                 <Text>Loading...</Text>
                                 :
-                                (menuItems?.length == 0) ? <NoItems /> : <></>
+                                (menuItems?.length == 0) ? <NoItems /> : <DisplayItems menuItems={menuItems} />
                             }
                         </View>
                     </View>
